@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>S3 Static Website</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="marquee">
+      <section>
+        <span class="sliding">
+          <span>S3-STATIC-WEBSITE</span>
+          <span>᯽</span>
+          <span>S3-STATIC-WEBSITE</span>
+        </span>
+        <div class="wrapper">
+          <span class="sliding">
+            <span>S3-STATIC-WEBSITE</span>
+            <span>᯽</span>
+            <span>S3-STATIC-WEBSITE</span>
+          </span>
+        </div>
+      </section>
+    </div>
+  
+    <div>
+  <h1>This static S3 website bucket has:</h1>
+
+  <ul>
+    <li>
+      <b>Bucket Policy to allow public access: </b>
+      <p>
+        For a static website to be accessible, public read access is required
+        for HTML and style pages, as well as other resources.
+      <pre>
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": "*",
+        "Action": "s3:GetObject",
+        "Resource": "arn:aws:s3:::s3-static-website-bucket/*"
+      }
+    ]
+  }
+  </pre>
+      </p>
+    </li>
+    <li>
+      <b>Bucket Policy to enforce encryption for uploads: </b>
+      <p>
+        The S3 bucket policy enforces HTTPS for uploads, blocking any file
+        upload attempts over HTTP to ensure data encryption in transit.
+        <pre>
+           {
+            "Sid": "DenyNonHttpsUploadsIntoStaticWebsiteBucket",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::s3-static-website-assets/*",
+            "Condition": {
+                "Bool": {
+                  <span style="color: firebrick;">"aws:SecureTransport": "false" </span>  
+                }
+            }
+          } 
+        </pre>
+        Test in CLI by uploading existent file with enforcing HTTP:  <pre>aws s3 cp index.html  s3://s3-static-website-bucket/ --endpoint-url http://s3-static-website-bucket.s3.eu-north-1.amazonaws.com</pre>
+        and there will be error <em style="color: firebrick;">An error occurred (AccessDenied) when calling the PutObject operation: User: arn:aws:iam:..</em>
+    
+      </p>
+    </li>
+    <li>
+      <b>CORS-Enabled for resources from other origins: </b>
+      <p>
+        Resources for the static buckt site are fetched from a another
+        <span class="circle-sketch-highlight">CORS-enabled</span> S3 bucket.
+        <pre>
+            [
+        {
+            "AllowedHeaders": [
+                "Authorization"
+            ],
+            "AllowedMethods": [
+                "GET"
+            ],
+            "AllowedOrigins": [
+                "http://s3-static-website-bucket.s3-website.eu-north-1.amazonaws.com"
+            ],
+            "ExposeHeaders": [
+                "ETag"
+            ],
+            "MaxAgeSeconds": 3000
+        }
+          ]
+          </pre>
+        This CORS configutation allows securely load cross-origin resources from other buckets,
+        either in the same or different regions.
+      </p>
+    </li>
+  </ul>
+</div>
+
+    <div id="from-cors"> </div>
+    <script src="./script.js"></script>
+  </body>
+</html>

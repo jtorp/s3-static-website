@@ -1,0 +1,108 @@
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+div{
+  padding: 4px 8px;
+}
+.marquee {
+  padding: 0;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 260px;
+  border-top: 1px solid forestgreen;
+  border-bottom: 1px solid forestgreen;
+  display: flex;
+  font-weight: 600;
+}
+
+section {
+  width: 100%;
+  height: 260px;
+  background: transparent;
+  color: forestgreen;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.wrapper {
+  position: absolute;
+  overflow: hidden;
+  color: white;
+  height: 100%;
+  width: 50%;
+  top: 0;
+  left: 0;
+  background-color: forestgreen;
+}
+
+.sliding {
+  position: absolute;
+  font-size: 9em;
+  line-height: 228px;
+  white-space: nowrap;
+  top: 45%;
+  overflow: hidden;
+  animation: marquee 12s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0, -50%);
+  }
+
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+.circle-sketch-highlight {
+  position: relative;
+  display: inline-block;
+  padding: 0.1em 0.4em;
+  display: inline-block;
+}
+
+.circle-sketch-highlight:before {
+  content: "";
+  z-index: -1;
+  left: -0.5em;
+  top: -0.1em;
+  border-width: 2px;
+  border-style: solid;
+  border-color: forestgreen;
+  position: absolute;
+  border-right-color: transparent;
+  width: 100%;
+  height: 1em;
+  transform: rotate(2deg);
+  opacity: 0.7;
+  border-radius: 50%;
+  padding: 0.1em 0.35em;
+}
+
+.circle-sketch-highlight:after {
+  content: "";
+  z-index: -1;
+  left: -0.5em;
+  top: 0.1em;
+  padding: 0.1em 0.25em;
+  border-width: 2px;
+  border-style: solid;
+  border-color: forestgreen;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  position: absolute;
+  width: 100%;
+  height: 1em;
+  transform: rotate(-1deg);
+  opacity: 0.7;
+  border-radius: 50%;
+}
